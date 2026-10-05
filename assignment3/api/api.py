@@ -1,49 +1,58 @@
+from contextlib import asynccontextmanager
 from typing import Literal
 
 from fastapi import FastAPI, HTTPException
+from mlflow.exceptions import MlflowException
 from pydantic import BaseModel, ConfigDict, Field
 
-from inference import available_models, predict_penguin
+from inference import load_model, model_info, predict_penguin
 
-app = FastAPI(title="Palmer Penguins API")
-state = {"active_model": "random_forest"}
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # The model may not be registered yet; /predict and /model/reload retry later.
+    try:
+        load_model()
+    except MlflowException:
+        pass
+    yield
+
+
+app = FastAPI(title="Palmer Penguins API", lifespan=lifespan)
 
 
 class PenguinFeatures(BaseModel):
     model_config = ConfigDict(extra="forbid", json_schema_extra={"examples": [{"island": "Torgersen", "bill_length_mm": 39.1, "bill_depth_mm": 18.7, "flipper_length_mm": 181, "body_mass_g": 3750, "sex": "MALE"}]})
-    island: str = Field(examples=["Torgersen"])
+    island: Literal["Biscoe", "Dream", "Torgersen"] = Field(examples=["Torgersen"])
     bill_length_mm: float = Field(examples=[39.1])
     bill_depth_mm: float = Field(examples=[18.7])
-    flipper_length_mm: int = Field(examples=[181])
-    body_mass_g: int = Field(examples=[3750])
+    flipper_length_mm: float = Field(examples=[181])
+    body_mass_g: float = Field(examples=[3750])
     sex: Literal["MALE", "FEMALE"] = Field(examples=["MALE"])
-
-
-class ModelSelection(BaseModel):
-    model_name: str = Field(examples=["random_forest"])
 
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "active_model": state["active_model"], "models_available": available_models()}
+    return {"status": "ok", "model": model_info()}
 
 
-@app.get("/models")
-def models():
-    return {"available_models": available_models(), "active_model": state["active_model"]}
+@app.get("/model")
+def model():
+    return model_info()
 
 
-@app.post("/models/select")
-def select_model(selection: ModelSelection):
-    if selection.model_name not in available_models():
-        raise HTTPException(404, f"Model not found. Available models: {available_models()}")
-    state["active_model"] = selection.model_name
-    return {"active_model": selection.model_name}
+@app.post("/model/reload")
+def reload_model():
+    try:
+        return load_model()
+    except MlflowException as error:
+        raise HTTPException(503, f"Model not available in MLflow. Run notebooks/entrenamiento.ipynb first. ({error.message})") from error
 
 
 @app.post("/predict")
 def predict(features: PenguinFeatures):
     try:
-        return {"model": state["active_model"], "predicted_species": predict_penguin(features.model_dump(), state["active_model"])}
-    except FileNotFoundError as error:
-        raise HTTPException(503, str(error)) from error
+        species = predict_penguin(features.model_dump())
+        return {"model": model_info(), "predicted_species": species}
+    except MlflowException as error:
+        raise HTTPException(503, f"Model not available in MLflow. Run notebooks/entrenamiento.ipynb first. ({error.message})") from error
