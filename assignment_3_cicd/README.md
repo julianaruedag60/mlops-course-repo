@@ -234,7 +234,7 @@ requerido no pasó.
 
 ---
 
-## Extra · Auto-merge después de CI
+## Auto-merge 
 
 Para completar el flujo de CI/CD, el merge a `main` se hace de forma **automática** (auto-merge) cuando el
 check requerido `unit-tests` pasa. Nadie tiene que hacer clic en *Merge*.
@@ -270,11 +270,9 @@ unit-tests ✅  ──►  GitHub hace el merge a main automáticamente
 
 ### Evidencia
 
-PR con *"enabled auto-merge"* y merge automático tras pasar los checks:
+<img width="1282" height="742" alt="image" src="https://github.com/user-attachments/assets/d686a5d8-559a-42d6-a0ee-b12e17cb405b" />
 
-_(pegar captura del PR)_
+<img width="1536" height="286" alt="image" src="https://github.com/user-attachments/assets/8861c041-52f7-4f02-98d5-f1c8dcc5c7fb" />
 
-Deployment en el environment `DOCKERHUB`:
 
-_(pegar captura del deployment)_
 
