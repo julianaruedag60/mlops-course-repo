@@ -98,7 +98,7 @@ Workflow: [`.github/workflows/ci-cd-unit-tests-dockerhub.yml`](../.github/workfl
 |---|---|
 | 1. Módulo Python propio con pruebas | `assignment_3_cicd/` (Actividad 1) |
 | 2. Ajustar `paths` y `APP_PATH` | `paths: "assignment_3_cicd/**"` · `APP_PATH: "assignment_3_cicd"` |
-| 3. Cambiar `IMAGE_NAME` | `julianaruedag60/mlops-preprocessing-api` |
+| 3. Cambiar `IMAGE_NAME` | `julianarueda/mlops-preprocessing-api` |
 | 4. Pull Request que ejecute pruebas | job `unit-tests` en `pull_request` hacia `main` |
 | 5. Merge a `main` que publique imagen | job `publish-dockerhub` solo en `push` a `main` y si `unit-tests` pasa |
 
@@ -112,8 +112,8 @@ push / pull_request (cambios en assignment_3_cicd/**)
               └─ docker build + docker run (pytest dentro del contenedor)
         │  (solo si pasa y es push a main)
         ▼
-  publish-dockerhub ── build & push  →  julianaruedag60/mlops-preprocessing-api:latest
-                                        julianaruedag60/mlops-preprocessing-api:<sha>
+  publish-dockerhub ── build & push  →  julianarueda/mlops-preprocessing-api:latest
+                                        julianarueda/mlops-preprocessing-api:<sha>
 ```
 
 ### Configuración previa (una sola vez)
@@ -144,5 +144,5 @@ protección activa, el botón **Merge** queda bloqueado. Cerrar el PR sin hacer 
 |---|---|
 | Ejecución exitosa del job `unit-tests` (PR) | _pegar captura_ |
 | Job `publish-dockerhub` en `main` | _pegar captura_ |
-| Imagen en Docker Hub con tags `latest` y `<sha>` | `https://hub.docker.com/r/julianaruedag60/mlops-preprocessing-api/tags` |
+| Imagen en Docker Hub con tags `latest` y `<sha>` | `https://hub.docker.com/r/julianarueda/mlops-preprocessing-api/tags` |
 | Reto: PR con prueba fallida y merge bloqueado | _pegar captura_ |

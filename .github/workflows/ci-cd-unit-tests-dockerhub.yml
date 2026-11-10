@@ -18,7 +18,7 @@ on:
 env:
   PYTHON_VERSION: "3.11"
   APP_PATH: "assignment_3_cicd"
-  IMAGE_NAME: "julianaruedag60/mlops-preprocessing-api"
+  IMAGE_NAME: "julianarueda/mlops-preprocessing-api"
 
 jobs:
   unit-tests:
