@@ -13,7 +13,7 @@ def test_clean_text_normaliza_mayusculas_tildes_y_signos() -> None:
 
 
 def test_clean_text_elimina_urls() -> None:
-    assert clean_text("ver https://bbva.com ahora") == "ver ahora"
+    assert clean_text("ver https://bbva.com ahora") == "ver AHORA"  # RETO: falla a propósito
 
 
 def test_clean_text_string_vacio() -> None:  # caso borde
