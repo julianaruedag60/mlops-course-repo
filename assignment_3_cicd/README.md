@@ -1,7 +1,6 @@
-# Nivel 3 · CI/CD — Pruebas unitarias + GitHub Actions
 
-**Estudiante:** Juliana Rueda  
-**Curso:** MLOps — Pontificia Universidad Javeriana  
+**Nombres:** Esteban Castiblanco - Juliana Rueda  
+**Grupo:** 4
 **Repositorio:** https://github.com/julianaruedag60/mlops-course-repo  
 **Imagen Docker Hub:** https://hub.docker.com/r/julianarueda/mlops-preprocessing-api
 
@@ -89,8 +88,9 @@ pytest
 ```
 
 Resultado esperado: `24 passed`.
+<img width="3120" height="946" alt="image" src="https://github.com/user-attachments/assets/3307dcb7-3608-4a78-8c9f-c9064f9c9038" />
 
-![Pruebas en local](evidencias/01_pytest_local.png)
+
 
 ### Paso 5 — Ejecutar las pruebas en contenedor
 
@@ -102,9 +102,6 @@ cd assignment_3_cicd
 docker build -t preprocessing-api:0.0.1 .
 docker run --rm preprocessing-api:0.0.1
 ```
-
-![Pruebas dentro del contenedor](evidencias/02_pytest_contenedor.png)
-
 > Las pruebas en contenedor también se ejecutan en GitHub Actions, en el paso
 > *Run unit tests inside Docker container* del job `unit-tests`.
 
@@ -164,8 +161,8 @@ Credenciales configuradas como secrets del repositorio
 
 - `DOCKERHUB_USERNAME`
 - `DOCKERHUB_TOKEN` (personal access token de Docker Hub con permiso *Read & Write*)
+<img width="1404" height="1282" alt="image" src="https://github.com/user-attachments/assets/0c90d392-b2a3-471e-933f-135a4cc0f21a" />
 
-![Secrets configurados en GitHub](evidencias/03_github_secrets.png)
 
 ### Paso 4 — Crear un Pull Request y validar que ejecuta las pruebas
 
@@ -175,7 +172,11 @@ El job `publish-dockerhub` se omite en los PR, como se espera.
 
 **Evidencia 1 — Ejecución exitosa del job `unit-tests`**
 
-![Job unit-tests exitoso en el PR](evidencias/04_unit_tests_pr.png)
+<img width="3914" height="1524" alt="image" src="https://github.com/user-attachments/assets/1b896b7e-c602-4bab-9ce6-e614631e0428" />
+
+<img width="3908" height="938" alt="image" src="https://github.com/user-attachments/assets/12045393-545f-41c9-a53f-71b2f9705285" />
+
+
 
 ### Paso 5 — Hacer merge a `main` y validar que publica la imagen
 
@@ -183,8 +184,8 @@ Al hacer merge del PR #1, el workflow se ejecutó con un `push` a `main`: primer
 y luego `publish-dockerhub`, que construyó y publicó la imagen.
 
 **Evidencia 2 — Job `publish-dockerhub` en `main`**
+<img width="1362" height="1538" alt="image" src="https://github.com/user-attachments/assets/4da156b9-13c5-4ffd-bbb4-846c436f460d" />
 
-![Job publish-dockerhub exitoso en main](evidencias/05_publish_dockerhub_main.png)
 
 **Evidencia 3 — Imagen en Docker Hub con tags `latest` y `<sha>`**
 
@@ -206,7 +207,8 @@ Enlace: https://hub.docker.com/r/julianarueda/mlops-preprocessing-api/tags
 En **Settings → Branches** se creó una regla de protección para `main` con
 **Require status checks to pass before merging**, usando como check requerido `unit-tests`.
 
-![Regla de protección de main](evidencias/07_branch_protection.png)
+<img width="1394" height="1904" alt="image" src="https://github.com/user-attachments/assets/e35c1afc-d2ea-4301-9c83-ac788b5d91f4" />
+
 
 ### 2. Romper una prueba a propósito en un PR
 
@@ -227,35 +229,7 @@ Se abrió el [PR #2](https://github.com/julianaruedag60/mlops-course-repo/pull/2
 El job `unit-tests` falla (`1 failed, 23 passed`) y GitHub bloquea el merge porque el check
 requerido no pasó.
 
-![Log de la prueba fallida](evidencias/08_reto_log_fallo.png)
+<img width="1272" height="902" alt="image" src="https://github.com/user-attachments/assets/122a1976-446a-4771-8802-14f767d39be8" />
 
-![PR con el merge bloqueado](evidencias/09_reto_merge_bloqueado.png)
 
-El PR #2 se cerró sin hacer merge, así que `main` se mantiene con todas las pruebas en verde.
 
----
-
-## Resumen de cumplimiento
-
-### Actividad 1
-
-| # | Requisito | Cumplimiento |
-|---|---|---|
-| 1 | `app.py` (o módulo equivalente) | ✅ `assignment_3_cicd/app.py` |
-| 2 | Carpeta `tests/` con mínimo 6 pruebas | ✅ 24 pruebas |
-| 3 | Al menos 1 caso de error con `pytest.raises` | ✅ 6 casos (`TypeError`, `ValueError`) |
-| 4 | `Dockerfile` que ejecute `pytest` | ✅ `CMD ["pytest"]` |
-| 5 | Ejecución exitosa en contenedor | ✅ Local y en GitHub Actions |
-| — | Endpoint FastAPI probado con `TestClient` | ✅ `tests/test_api.py` |
-| — | Modelo aislado con un fixture | ✅ `FakeModel` en `tests/conftest.py` |
-
-### Actividad 2
-
-| # | Paso | Cumplimiento |
-|---|---|---|
-| 1 | Módulo Python propio con pruebas | ✅ `assignment_3_cicd/` |
-| 2 | Ajustar `paths` y `APP_PATH` | ✅ `assignment_3_cicd/**` |
-| 3 | Cambiar `IMAGE_NAME` | ✅ `julianarueda/mlops-preprocessing-api` |
-| 4 | PR que ejecuta las pruebas | ✅ PR #1, job `unit-tests` |
-| 5 | Merge a `main` que publica la imagen | ✅ Job `publish-dockerhub` |
-| Reto | Prueba fallida bloquea el merge | ✅ PR #2 bloqueado |
