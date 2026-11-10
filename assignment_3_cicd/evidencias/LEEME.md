@@ -5,11 +5,13 @@ Subir aquí las capturas con estos nombres exactos (PNG) para que se vean en el 
 | Archivo | Qué capturar |
 |---|---|
 | `01_pytest_local.png` | Terminal con `pytest` → `24 passed` |
-| `02_pytest_contenedor.png` | `docker run` con `24 passed`, o el paso *Run unit tests inside Docker container* en Actions |
-| `03_github_secrets.png` | Settings → Secrets: `DOCKERHUB_TOKEN` y `DOCKERHUB_USERNAME` |
-| `04_unit_tests_pr.png` | Job `unit-tests` en verde en el PR #1 |
-| `05_publish_dockerhub_main.png` | Job `publish-dockerhub` en verde en `main` |
-| `06_dockerhub_tags.png` | Docker Hub con los tags `latest` y `<sha>` |
-| `07_branch_protection.png` | Regla de protección de `main` con check `unit-tests` |
+<img width="3914" height="1524" alt="image" src="https://github.com/user-attachments/assets/e10a8249-b1b0-4eb9-901e-534218b5ccdc" />
+
+<img width="3908" height="938" alt="image" src="https://github.com/user-attachments/assets/2ff8d120-30db-48b5-b744-e30079be2800" />
+
+<img width="1241" height="1600" alt="image" src="https://github.com/user-attachments/assets/8ef50c0e-ee8c-4733-bbce-3c69936bd74e" />
+
+
 | `08_reto_log_fallo.png` | Log del job con `FAILED test_clean_text_elimina_urls` |
-| `09_reto_merge_bloqueado.png` | PR #2 con el check en rojo y el merge bloqueado |
+<img width="1272" height="902" alt="image" src="https://github.com/user-attachments/assets/dae540fb-13d4-4e51-999d-62827f595eb1" />
+
