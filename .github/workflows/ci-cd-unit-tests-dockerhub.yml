@@ -51,6 +51,9 @@ jobs:
     needs: unit-tests
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment:
+      name: DOCKERHUB
+      url: https://hub.docker.com/r/${{ env.IMAGE_NAME }}/tags
     permissions:
       contents: read
 

@@ -14,6 +14,7 @@ pruebas en cada Pull Request y, al hacer merge a `main`, publica la imagen en Do
 - [Actividad 1 · Pruebas unitarias](#actividad-1--pruebas-unitarias)
 - [Actividad 2 · GitHub Actions](#actividad-2--github-actions)
 - [Reto · Merge bloqueado por una prueba fallida](#reto--merge-bloqueado-por-una-prueba-fallida)
+- [Extra · Auto-merge después de CI](#extra--auto-merge-después-de-ci)
 - [Resumen de cumplimiento](#resumen-de-cumplimiento)
 
 ---
@@ -231,5 +232,49 @@ requerido no pasó.
 
 <img width="1272" height="902" alt="image" src="https://github.com/user-attachments/assets/122a1976-446a-4771-8802-14f767d39be8" />
 
+---
 
+## Extra · Auto-merge después de CI
+
+Para completar el flujo de CI/CD, el merge a `main` se hace de forma **automática** (auto-merge) cuando el
+check requerido `unit-tests` pasa. Nadie tiene que hacer clic en *Merge*.
+
+### Configuración
+
+1. **Settings → General → Pull Requests:** se activó **Allow auto-merge**.
+2. **Settings → Branches:** la regla de `main` exige el check `unit-tests` (la misma del reto).
+   Esta regla es obligatoria para que GitHub pueda usar auto-merge.
+3. **Workflow:** el job `publish-dockerhub` ahora usa el environment `DOCKERHUB`, así cada
+   publicación queda registrada como un *deployment* en GitHub con el enlace a la imagen:
+
+```yaml
+  publish-dockerhub:
+    needs: unit-tests
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment:
+      name: DOCKERHUB
+      url: https://hub.docker.com/r/${{ env.IMAGE_NAME }}/tags
+```
+
+### Flujo
+
+```text
+PR abierto ── auto-merge activado
+     │
+     ▼
+unit-tests ✅  ──►  GitHub hace el merge a main automáticamente
+                         │
+                         ▼
+               publish-dockerhub ──► deployment en environment DOCKERHUB
+```
+
+### Evidencia
+
+PR con *"enabled auto-merge"* y merge automático tras pasar los checks:
+
+_(pegar captura del PR)_
+
+Deployment en el environment `DOCKERHUB`:
+
+_(pegar captura del deployment)_
 
