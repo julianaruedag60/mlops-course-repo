@@ -196,7 +196,7 @@ Enlace: https://hub.docker.com/r/julianarueda/mlops-preprocessing-api/tags
 | `latest` | Última versión publicada desde `main` |
 | `05e569a3325320b050858cbbe936192986d2e0df` | SHA del commit de merge del PR #1 |
 
-![Imagen en Docker Hub con sus tags](evidencias/06_dockerhub_tags.png)
+
 
 ---
 
