@@ -236,7 +236,7 @@ requerido no pasó.
 
 ## Extra · Auto-merge después de CI
 
-Para completar el flujo de CI/CD, el merge a `main` se hace de forma **automática** cuando el
+Para completar el flujo de CI/CD, el merge a `main` se hace de forma **automática** (auto-merge) cuando el
 check requerido `unit-tests` pasa. Nadie tiene que hacer clic en *Merge*.
 
 ### Configuración
